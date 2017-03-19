@@ -69,20 +69,24 @@ int main()
             for (int x = 0; x < TEST_W; x++)
                 *(src + y * TEST_W + x) = rand();
 
+#if defined(SSE_PREFETCH)
         clock_gettime(CLOCK_REALTIME, &start);
         sse_prefetch_transpose(src, out0, TEST_W, TEST_H);
         clock_gettime(CLOCK_REALTIME, &end);
         printf("sse prefetch: \t %ld us\n", diff_in_us(start, end));
 
+#elif defined(SSE)
         clock_gettime(CLOCK_REALTIME, &start);
         sse_transpose(src, out1, TEST_W, TEST_H);
         clock_gettime(CLOCK_REALTIME, &end);
         printf("sse: \t\t %ld us\n", diff_in_us(start, end));
 
+#else
         clock_gettime(CLOCK_REALTIME, &start);
         naive_transpose(src, out2, TEST_W, TEST_H);
         clock_gettime(CLOCK_REALTIME, &end);
         printf("naive: \t\t %ld us\n", diff_in_us(start, end));
+#endif
 
         free(src);
         free(out0);
