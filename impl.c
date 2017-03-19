@@ -62,4 +62,18 @@ void sse_prefetch_transpose(int *src, int *dst, int w, int h)
     }
 }
 
+typedef struct _transClass transClass;
+typedef void (*func_t)(int *, int *, int, int);
+
+struct _transClass {
+    func_t run;
+};
+
+int init_object (transClass **self, void *func)
+{
+    if (NULL == (*self = malloc(sizeof(transClass)))) return -1;
+    (*self)->run = func;
+    return 0;
+}
+
 #endif /* TRANSPOSE_IMPL */
