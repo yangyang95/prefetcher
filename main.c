@@ -69,7 +69,7 @@ int main()
             for (int x = 0; x < TEST_W; x++)
                 *(src + y * TEST_W + x) = rand();
 
-        transClass *transpose = NULL;
+        Matrix *transpose = NULL;
 
 #if defined(sse_prefetch)
         init_object(&transpose, &sse_prefetch_transpose);

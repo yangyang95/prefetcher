@@ -62,16 +62,16 @@ void sse_prefetch_transpose(int *src, int *dst, int w, int h)
     }
 }
 
-typedef struct _transClass transClass;
+typedef struct matrix Matrix;
 typedef void (*func_t)(int *, int *, int, int);
 
-struct _transClass {
+struct matrix {
     func_t run;
 };
 
-int init_object (transClass **self, void *func)
+int init_object (Matrix **self, void *func)
 {
-    if (NULL == (*self = malloc(sizeof(transClass)))) return -1;
+    if (NULL == (*self = malloc(sizeof(Matrix)))) return -1;
     (*self)->run = func;
     return 0;
 }
