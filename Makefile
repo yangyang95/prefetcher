@@ -1,24 +1,25 @@
-CFLAGS = -msse2 --std gnu99 -O0 -Wall -Wextra
+CC ?= gcc
+CFLAGS = -msse2 --std gnu99 -O0 -Wall -Wextra -g -I.
+LDFLAGS = -lpthread
 
 GIT_HOOKS := .git/hooks/applied
 OUT ?= .build
 
-EXECUTABLE := tests/test_matrix
+EXEC = tests/test_matrix
 
 OBJS := \
 		stopwatch.o \
 		naive_transpose.o \
-		sse_transpose.o \
-		sse_prefetch_transpose.o
+		sse_transpose.o
 
 OBJS := $(addprefix $(OUT)/,$(OBJS))
 deps := $(OBJS:%.o=%.o.d)
 
 .PHONY: all
-all: $(GIT_HOOKS) $(OUT) $(EXECUTABLE)
+all: $(GIT_HOOKS) $(OUT) $(EXEC)
 
-tests/%_transpose: $(OBJS) tests/%_transpose.c
-	$(CC) $(CFLAGS) -c -o $@ $^
+tests/test_matrix: $(OBJS) tests/test_matrix.c
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(OUT)/%.o: impl/%.c $(OUT)
 	$(CC) $(CFLAGS) -c -o $@ -MMD -MF $@.d $<
@@ -26,7 +27,7 @@ $(OUT)/%.o: impl/%.c $(OUT)
 $(OUT):
 	@mkdir -p $@
 
-check: $(EXECUTABLE)
+check: $(EXEC)
 	@for test in $^ ; \
 	do \
 		echo "Execute $$test..." ; $$test && echo "OK!\n" ; \
@@ -37,7 +38,7 @@ $(GIT_HOOKS):
 	@echo
 
 clean:
-	$(RM) $(EXECUTABLE) $(OBJS) $(deps)
+	$(RM) $(EXEC) $(OBJS) $(deps)
 	@rm -rf $(OUT)
 
 -include $(deps)

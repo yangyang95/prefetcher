@@ -13,11 +13,12 @@
  * sse_transpose, sse_prefetch_transpose
  */
 
-#include "../impl/naive_transpose.c"
-#include "../stopwatch.c"
+#include "../impl/matrix.h"
+#include "../impl/stopwatch.h"
 
 MatrixAlgo *matrix_providers[] = {
     &NaiveMatrixProvider,
+    &SSEMatrixProvider,
 };
 
 int main()
