@@ -6,6 +6,7 @@ OUT ?= .build
 EXECUTABLE := tests/test_matrix
 
 OBJS := \
+		stopwatch.o \
 		naive_transpose.o \
 		sse_transpose.o \
 		sse_prefetch_transpose.o
