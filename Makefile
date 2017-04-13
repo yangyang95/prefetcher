@@ -25,7 +25,7 @@ $(OUT)/%.o: impl/%.c $(OUT)
 $(OUT):
 	@mkdir -p $@
 
-check: $(EXEC)
+check: $(EXECUTABLE)
 	@for test in $^ ; \
 	do \
 		echo "Execute $$test..." ; $$test && echo "OK!\n" ; \
@@ -36,7 +36,7 @@ $(GIT_HOOKS):
 	@echo
 
 clean:
-	$(RM) $(EXEC) $(OBJS) $(deps)
+	$(RM) $(EXECUTABLE) $(OBJS) $(deps)
 	@rm -rf $(OUT)
 
 -include $(deps)
