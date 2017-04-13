@@ -3,6 +3,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <string.h>
+#include <malloc.h>
 #include <assert.h>
 
 #define TEST_W 4096
@@ -44,9 +45,6 @@ int main()
 
         Matrix *matrix, *expect;
 
-        watch_p ctx = Stopwatch.create();
-        assert(ctx && "Clock setup fail!");
-
         /* expected answer */
         expect = algo->create(4, 4);
         algo->assign(expect, *expected, expected_size);
@@ -60,16 +58,11 @@ int main()
         algo->println(matrix);
 
         /* transpose */
-        Stopwatch.start(ctx);
         algo->transpose(matrix);
-        double now = Stopwatch.read(ctx);
 
         /* print result */
         printf("After transpose:\n");
         algo->println(matrix);
-
-        printf("elpased time: %g us\n", now);
-        Stopwatch.destroy(ctx);
 
         /* correctness check */
         assert(1 == algo->equal(matrix, expect) &&
@@ -78,7 +71,35 @@ int main()
 
     /* Performance test */
     {
-        /*TODO: Add performace test */
+        float *src = (float *) memalign(32, sizeof(float) * TEST_W * TEST_H);
+
+        srand(time(NULL));
+        for (int i = 0; i < TEST_H; ++i) {
+            for (int j = 0; j < TEST_W; ++j) {
+                src[i * TEST_W + j] = rand();
+            }
+        }
+
+        int src_size = TEST_W * TEST_H;
+
+        Matrix *matrix;
+
+        /* create & assign matrix */
+        matrix = algo->create(TEST_W, TEST_H);
+        algo->assign(matrix, src, src_size);
+
+        /* setup timer */
+        watch_p ctx = Stopwatch.create();
+        assert(ctx && "Clock setup fail!");
+
+        /* transpose & measure time */
+        Stopwatch.start(ctx);
+        algo->transpose(matrix);
+        double now = Stopwatch.read(ctx);
+
+        /* print result */
+        printf("elpased time: %g us\n", now);
+        Stopwatch.destroy(ctx);
     }
 
     return 0;
