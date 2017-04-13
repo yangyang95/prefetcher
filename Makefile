@@ -8,7 +8,7 @@ EXECUTABLE := tests/test_matrix
 OBJS := \
 		naive_transpose.o \
 		sse_transpose.o \
-		sse_prefetch_transpose
+		sse_prefetch_transpose.o
 
 OBJS := $(addprefix $(OUT)/,$(OBJS))
 deps := $(OBJS:%.o=%.o.d)
