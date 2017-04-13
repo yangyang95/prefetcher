@@ -5,4 +5,5 @@
 *.list
 *.swp
 *.bak
+.build
 tests/test_matrix
