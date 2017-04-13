@@ -41,35 +41,33 @@ int main()
     int testin_size = sizeof(testin) / sizeof(testin[0][0]);
     int expected_size = sizeof(expected) / sizeof(expected[0][0]);
 
-    Matrix *dst, *src, *expect;
+    Matrix *matrix, *expect;
 
     /* expected answer */
     expect = algo->create(4, 4);
     algo->assign(expect, *expected, expected_size);
 
     /* create & assign matrix */
-    src = algo->create(4, 4);
-    dst = algo->create(4, 4);
+    matrix = algo->create(4, 4);
+    algo->assign(matrix, *testin, testin_size);
 
-    algo->assign(src, *testin, testin_size);
+    /* print original matrix */
+    printf("Before transpose:\n");
+    algo->println(matrix);
 
     /* transpose */
     /*TODO: measure elapsed time */
-    algo->transpose(dst, src);
+    algo->transpose(matrix);
 
     /* correctness check */
-    assert(1 == algo->equal(dst, expect) &&
+    assert(1 == algo->equal(matrix, expect) &&
            "Verification fails");
 
     /* print result */
     /*TODO: print tranpose elapsed time info*/
 
-    printf("Before transpose:\n");
-    algo->print(src);
-    printf("\n");
-
     printf("After transpose:\n");
-    algo->print(dst);
+    algo->println(matrix);
 
     return 0;
 }

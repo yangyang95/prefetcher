@@ -18,8 +18,8 @@ typedef struct {
     Matrix* (*create)(int row, int col);
     void (*assign)(Matrix *thiz, float* data, int data_size);
     bool (*equal)(const Matrix *l, const Matrix *r);
-    void (*transpose)(Matrix *dst, Matrix *src);
-    void (*print)(Matrix *thiz);
+    void (*transpose)(Matrix *thiz);
+    void (*println)(Matrix *thiz);
 } MatrixAlgo;
 
 /* Available matrix providers */

@@ -44,18 +44,20 @@ static bool equal(const Matrix *l, const Matrix *r)
     return true;
 }
 
-static void naive_transpose(Matrix *dst, Matrix *src)
+static void naive_transpose(Matrix *thiz)
 {
-    /*TODO: Make this method tranpose itself*/
-    assert(dst->col == src->col && dst->row == src->row
-           && "Matrix size is different");
+    float *tmp = (float *)calloc(thiz->row * thiz->col, sizeof(float));
 
-    for (int i = 0; i < dst->row; i++)
-        for (int j = 0; j < dst->col; j++)
-            PRIV(dst)[i*dst->col + j] = PRIV(src)[j*dst->col + i];
+    for (int i = 0; i < thiz->row; i++)
+        for (int j = 0; j < thiz->col; j++)
+            tmp[i*thiz->col + j] = PRIV(thiz)[i*thiz->col + j];
+
+    for (int i = 0; i < thiz->row; i++)
+        for (int j = 0; j < thiz->col; j++)
+            PRIV(thiz)[i*thiz->col + j] = tmp[j*thiz->col + i];
 }
 
-static void print(Matrix *thiz)
+static void println(Matrix *thiz)
 {
     int col = thiz->col;
     for (int i = 0; i < thiz->row; i++) {
@@ -64,6 +66,7 @@ static void print(Matrix *thiz)
         }
         printf("\n");
     }
+    printf("\n");
 }
 
 MatrixAlgo NaiveMatrixProvider = {
@@ -71,5 +74,5 @@ MatrixAlgo NaiveMatrixProvider = {
     .assign = assign,
     .equal = equal,
     .transpose = naive_transpose,
-    .print = print,
+    .println = println,
 };
