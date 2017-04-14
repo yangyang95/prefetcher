@@ -7,3 +7,4 @@
 *.bak
 .build
 tests/test_matrix
+*_transpose

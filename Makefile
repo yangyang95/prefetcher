@@ -5,7 +5,10 @@ LDFLAGS = -lpthread
 GIT_HOOKS := .git/hooks/applied
 OUT ?= .build
 
-EXEC = tests/test_matrix
+EXEC = \
+	   tests/test_matrix \
+	   naive_transpose \
+	   sse_transpose
 
 OBJS := \
 		stopwatch.o \
@@ -20,6 +23,9 @@ all: $(GIT_HOOKS) $(OUT) $(EXEC)
 
 tests/test_matrix: $(OBJS) tests/test_matrix.c
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+%_transpose: $(OBJS) tests/test_matrix.c
+	$(CC) $(CFLAGS) -D$(subst _transpose,,$@) -o $@ $^ $(LDFLAGS)
 
 $(OUT)/%.o: impl/%.c $(OUT)
 	$(CC) $(CFLAGS) -c -o $@ -MMD -MF $@.d $<

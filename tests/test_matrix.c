@@ -23,7 +23,13 @@ MatrixAlgo *matrix_providers[] = {
 
 int main()
 {
+    /* Matrix algorithm declaration */
+
+#ifdef sse
+    MatrixAlgo *algo = matrix_providers[1];
+#else
     MatrixAlgo *algo = matrix_providers[0];
+#endif
 
     /* verify the result of 4x4 matrix */
     {
