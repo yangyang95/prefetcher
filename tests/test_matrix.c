@@ -148,7 +148,7 @@ int main()
         double now = Stopwatch.read(ctx);
 
         /* print result */
-        printf("elapsed time: %g us\n", now);
+        printf("%g", now);
         Stopwatch.destroy(ctx);
     }
 

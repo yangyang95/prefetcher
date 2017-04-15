@@ -40,6 +40,19 @@ check: $(EXEC)
 	do \
 		echo "Execute $$test..." ; $$test && echo "OK!\n" ; \
 	done
+data: $(EXEC)
+	for i in `seq 1 100`; do  \
+		printf "$$i " >> time.txt ; \
+		./naive_transpose >> time.txt ; \
+		printf " " >> time.txt; \
+		./sse_transpose >> time.txt; \
+		printf " " >> time.txt; \
+		./sse_prefetch_transpose >> time.txt; \
+		printf "\n" >> time.txt ; \
+	done 
+
+plot: data
+	gnuplot scripts/plot/plot.gp
 
 $(GIT_HOOKS):
 	@scripts/install-git-hooks
@@ -48,5 +61,5 @@ $(GIT_HOOKS):
 clean:
 	$(RM) $(EXEC) $(OBJS) $(deps)
 	@rm -rf $(OUT)
-
+	rm -f time.png time.txt
 -include $(deps)
