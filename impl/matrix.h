@@ -26,5 +26,6 @@ typedef struct {
 extern MatrixAlgo NaiveMatrixProvider;
 extern MatrixAlgo SSEMatrixProvider;
 extern MatrixAlgo SSEPrefetchMatrixProvider;
+extern MatrixAlgo AvxMatrixProvider;
 
 #endif /* MATRIX_H_ */

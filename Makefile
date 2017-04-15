@@ -1,5 +1,5 @@
 CC ?= gcc
-CFLAGS = -msse2 --std gnu99 -O0 -Wall -Wextra -g -I.
+CFLAGS = -msse2 --std gnu99 -O0 -Wall -Wextra -mavx2 -g -I.
 LDFLAGS = -lpthread
 
 GIT_HOOKS := .git/hooks/applied
@@ -9,13 +9,15 @@ EXEC = \
 	   tests/test_matrix \
 	   naive_transpose \
 	   sse_transpose \
-	   sse_prefetch_transpose
+	   sse_prefetch_transpose \
+	   avx_transpose \
 
 OBJS := \
 		stopwatch.o \
 		naive_transpose.o \
 		sse_transpose.o \
-		sse_prefetch_transpose.o
+		sse_prefetch_transpose.o \
+                avx_transpose.o \
 
 OBJS := $(addprefix $(OUT)/,$(OBJS))
 deps := $(OBJS:%.o=%.o.d)
@@ -48,6 +50,8 @@ data: $(EXEC)
 		./sse_transpose >> time.txt; \
 		printf " " >> time.txt; \
 		./sse_prefetch_transpose >> time.txt; \
+		printf " " >> time.txt; \
+                ./avx_transpose >> time.txt; \
 		printf "\n" >> time.txt ; \
 	done 
 
