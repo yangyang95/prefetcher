@@ -44,17 +44,14 @@ static bool equal(const Matrix *l, const Matrix *r)
     return true;
 }
 
-static void naive_transpose(Matrix *thiz)
+static void naive_transpose(Matrix *dst, const Matrix *src)
 {
-    float *tmp = (float *)calloc(thiz->row * thiz->col, sizeof(float));
+    assert(dst->col == src->col && dst->row == src->row
+           && "Matrix size is different!");
 
-    for (int i = 0; i < thiz->row; i++)
-        for (int j = 0; j < thiz->col; j++)
-            tmp[i*thiz->col + j] = PRIV(thiz)[i*thiz->col + j];
-
-    for (int i = 0; i < thiz->row; i++)
-        for (int j = 0; j < thiz->col; j++)
-            PRIV(thiz)[i*thiz->col + j] = tmp[j*thiz->col + i];
+    for (int i = 0; i < dst->row; i++)
+        for (int j = 0; j < dst->col; j++)
+            PRIV(dst)[i*dst->col + j] = PRIV(src)[j*dst->col + i];
 }
 
 static void println(Matrix *thiz)

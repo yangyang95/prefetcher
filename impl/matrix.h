@@ -18,12 +18,13 @@ typedef struct {
     Matrix* (*create)(int row, int col);
     void (*assign)(Matrix *thiz, float* data, int data_size);
     bool (*equal)(const Matrix *l, const Matrix *r);
-    void (*transpose)(Matrix *thiz);
+    void (*transpose)(Matrix *dst, const Matrix *src);
     void (*println)(Matrix *thiz);
 } MatrixAlgo;
 
 /* Available matrix providers */
 extern MatrixAlgo NaiveMatrixProvider;
 extern MatrixAlgo SSEMatrixProvider;
+extern MatrixAlgo SSEPrefetchMatrixProvider;
 
 #endif /* MATRIX_H_ */
