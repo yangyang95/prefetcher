@@ -19,13 +19,16 @@
 MatrixAlgo *matrix_providers[] = {
     &NaiveMatrixProvider,
     &SSEMatrixProvider,
+    &SSEPrefetchMatrixProvider
 };
 
 int main()
 {
     /* Matrix algorithm declaration */
 
-#ifdef sse
+#ifdef sse_prefetch
+    MatrixAlgo *algo = matrix_providers[2];
+#elif sse
     MatrixAlgo *algo = matrix_providers[1];
 #else
     MatrixAlgo *algo = matrix_providers[0];

@@ -8,12 +8,14 @@ OUT ?= .build
 EXEC = \
 	   tests/test_matrix \
 	   naive_transpose \
-	   sse_transpose
+	   sse_transpose \
+	   sse_prefetch_transpose
 
 OBJS := \
 		stopwatch.o \
 		naive_transpose.o \
-		sse_transpose.o
+		sse_transpose.o \
+		sse_prefetch_transpose.o
 
 OBJS := $(addprefix $(OUT)/,$(OBJS))
 deps := $(OBJS:%.o=%.o.d)
