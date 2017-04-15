@@ -56,10 +56,10 @@ void sse_prefetch_transpose(Matrix *dst, const Matrix *src)
     for (int x = 0; x < w; x += 4) {
         for (int y = 0; y < h; y += 4) {
 #define PFDIST  8
-            _mm_prefetch(src+(y + PFDIST + 0) *w * 4 + x, _MM_HINT_T1);
-            _mm_prefetch(src+(y + PFDIST + 1) *w * 4 + x, _MM_HINT_T1);
-            _mm_prefetch(src+(y + PFDIST + 2) *w * 4 + x, _MM_HINT_T1);
-            _mm_prefetch(src+(y + PFDIST + 3) *w * 4 + x, _MM_HINT_T1);
+            _mm_prefetch(src->priv +(y + PFDIST + 0) *w * 4 + x*4, _MM_HINT_T1);
+            _mm_prefetch(src->priv +(y + PFDIST + 1) *w * 4 + x*4, _MM_HINT_T1);
+            _mm_prefetch(src->priv +(y + PFDIST + 2) *w * 4 + x*4, _MM_HINT_T1);
+            _mm_prefetch(src->priv +(y + PFDIST + 3) *w * 4 + x*4, _MM_HINT_T1);
 
             __m128i I0 = _mm_loadu_si128 ((__m128i *)(src->priv + (y + 0) * w * 4 + x*4));
             __m128i I1 = _mm_loadu_si128 ((__m128i *)(src->priv + (y + 1) * w * 4 + x*4));
