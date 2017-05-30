@@ -17,7 +17,8 @@ MatrixAlgo *matrix_providers[] = {
     &NaiveMatrixProvider,
     &SSEMatrixProvider,
     &SSEPrefetchMatrixProvider,
-    &AvxMatrixProvider
+    &AvxMatrixProvider,
+    &AvxPrefetchMatrixProvider
 };
 
 // Default array size is 4096, ARRAY_SIZE_I is how many times of
@@ -34,7 +35,9 @@ int main()
     int TEST_H = 4096 + ARRAY_SIZE_I * 64;
 
     /* Matrix algorithm declaration */
-#ifdef avx
+#ifdef avx_prefetch
+    MatrixAlgo *algo = matrix_providers[4];
+#elif avx
     MatrixAlgo *algo = matrix_providers[3];
 #elif sse_prefetch
     MatrixAlgo *algo = matrix_providers[2];

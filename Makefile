@@ -11,6 +11,7 @@ EXEC = \
 	   sse_transpose \
 	   sse_prefetch_transpose \
 	   avx_transpose \
+	   avx_prefetch_transpose \
 
 OBJS := \
 		stopwatch.o \
@@ -18,6 +19,7 @@ OBJS := \
 		sse_transpose.o \
 		sse_prefetch_transpose.o \
                 avx_transpose.o \
+		avx_prefetch_transpose.o \
 
 OBJS := $(addprefix $(OUT)/,$(OBJS))
 deps := $(OBJS:%.o=%.o.d)
@@ -52,7 +54,9 @@ data: $(EXEC)
 		./sse_prefetch_transpose >> time.txt; \
 		printf " " >> time.txt; \
                 ./avx_transpose >> time.txt; \
-		printf "\n" >> time.txt ; \
+		printf " " >> time.txt; \
+		./avx_prefetch_transpose >> time.txt; \
+		printf "\n" >> time.txt; \
 	done
 
 plot: data
