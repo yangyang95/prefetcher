@@ -6,9 +6,6 @@
 #include <malloc.h>
 #include <assert.h>
 
-#define TEST_W 4096
-#define TEST_H 4096
-
 /* provide the implementations of naive_transpose,
  * sse_transpose, sse_prefetch_transpose
  */
@@ -23,8 +20,19 @@ MatrixAlgo *matrix_providers[] = {
     &AvxMatrixProvider
 };
 
+// Default array size is 4096, ARRAY_SIZE_I is how many times of
+// 64 size of width should add to array size
+//
+// array size = 4096 + ARRAY_SIZE_I * 64;
+#ifndef ARRAY_SIZE_I
+#define ARRAY_SIZE_I  0
+#endif
+
 int main()
 {
+    int TEST_W = 4096 + ARRAY_SIZE_I * 64;
+    int TEST_H = 4096 + ARRAY_SIZE_I * 64;
+
     /* Matrix algorithm declaration */
 #ifdef avx
     MatrixAlgo *algo = matrix_providers[3];
@@ -67,7 +75,7 @@ int main()
         algo->assign(matrix, *testin, testin_size);
 
         /* transpose */
-        algo->transpose(ans ,matrix);
+        algo->transpose(ans,matrix);
 
         /* correctness check */
         assert(1 == algo->equal(ans, expect) &&
@@ -113,7 +121,7 @@ int main()
         algo->assign(matrix, *testin, testin_size);
 
         /* transpose */
-        algo->transpose(ans ,matrix);
+        algo->transpose(ans,matrix);
 
         /* correctness check */
         assert(1 == algo->equal(ans, expect) &&

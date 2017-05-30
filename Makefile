@@ -53,10 +53,30 @@ data: $(EXEC)
 		printf " " >> time.txt; \
                 ./avx_transpose >> time.txt; \
 		printf "\n" >> time.txt ; \
-	done 
+	done
 
 plot: data
 	gnuplot scripts/plot/plot.gp
+
+pfd_plot: clean
+	for i in `seq 1 20`; do \
+		$(MAKE) PFDIST=$$i --silent; \
+		printf "$$i " >> time.txt ; \
+		./sse_prefetch_transpose >> time.txt; \
+		printf "\n" >> time.txt ; \
+	done
+	gnuplot scripts/plot/pfdist_plot.gp
+
+array_size:
+	for i in `seq 0 12`; do \
+		$(MAKE) ARRAY_SIZE_I=$$i --silent; \
+		echo; echo i = $$i ; \
+		echo 1 | sudo tee /proc/sys/vm/drop_caches; \
+		sudo perf stat --repeat 5 -e cache-misses,cache-references,L1-dcache-load-misses \
+		-e L1-dcache-loads,L1-dcache-stores,L1-icache-load-misses \
+		-e r02D1,r10D1 \
+		./naive_transpose; \
+	done
 
 $(GIT_HOOKS):
 	@scripts/install-git-hooks
