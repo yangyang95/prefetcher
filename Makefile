@@ -5,6 +5,10 @@ LDFLAGS = -lpthread
 GIT_HOOKS := .git/hooks/applied
 OUT ?= .build
 
+ifdef ARRAY_SIZE_I
+CFLAGS += -D ARRAY_SIZE_I=${ARRAY_SIZE_I}
+endif
+
 EXEC = \
 	   tests/test_matrix \
 	   naive_transpose \
